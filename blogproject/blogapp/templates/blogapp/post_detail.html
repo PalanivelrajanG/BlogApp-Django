@@ -1,0 +1,56 @@
+{% extends 'blogapp/base.html' %}
+{% block content %}
+
+<article class="media content-section">
+    <img class="rounded-circle article-img" src="{{ object.author.profile.image.url }}" alt="">
+    <div class="media-body">
+        <div class="article-metadata">
+            <h5>
+                <b><a class="mr-2">{{ object.author }}</a></b>
+            </h5>
+            <h6>
+                <medium class="text-muted">{{ object.date }}</medium>
+            </h6>
+        </div>
+        <h3><a class="article-title">{{ object.title }}</a></h3>
+      <b><medium><p class="article-content">{{ object.content }}</p></medium></b>
+        {% if object.author == user %}
+        <a class="btn btn-outline-success" href="{% url 'blogapp-update' object.id %}"> Update </a>
+        <a class="btn btn-outline-danger" href="{% url 'blogapp-delete' object.id %}"> Delete </a>
+        {% endif %}
+        <hr>
+        <div>
+          <h4>Comments</h4>
+          {% for comment in comments %}
+          <div class="comment">
+          <b><medium>{{ comment.commenter }}</medium></b>
+          <b><small>{{ comment.created_at }}</small></b>
+              <b><h5><p>{{ comment.content }}</p></h5></b>
+              
+              <hr>
+          </div>
+          {% empty %}
+          <p>No comments yet.</p>
+          {% endfor %}
+      </div>
+    </div>
+    <br>
+</article>
+
+<style>
+  /* CSS to change the color of the label */
+  label {
+      color: rgb(255, 255, 255); /* Change 'white' to any color you prefer */
+  }
+</style>
+
+<form method="post" action="{% url 'add_comment' object.id %}">
+  {% csrf_token %}
+  <div class="form-group">
+      <b><label for="comment-text">Add your Comment:</label></b>
+      <textarea class="form-control" id="comment-text" name="content" rows="3"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Add Comment</button>
+</form>
+{% endblock content %}
+

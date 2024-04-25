@@ -1,0 +1,22 @@
+{% extends 'blogapp/base.html' %}
+{% block content %}
+
+    {% for posts in posts %}
+        <article class="media content-section">
+          <img class="rounded-circle article-img" src="{{posts.author.profile.image.url}}" alt="">
+            <div class="media-body">
+              <div class="article-metadata">
+                <h5>
+                  <b><a class="mr-2" href="#">{{ posts.author }}</a></b>
+                </h5>
+                <h6>
+                  <small class="text-muted">{{ posts.date }}</small>
+                </h6>
+              </div>
+              <h2><a class="article-title" href="{%url 'blogapp-detail' posts.id%}">{{ posts.title }}</a></h2>
+              <p class="article-content">{{ posts.content }}</p>
+            </div>
+            <br>
+        </article>
+    {% endfor  %}
+{% endblock content %}
